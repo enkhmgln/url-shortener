@@ -6,9 +6,11 @@ type InputShortenerType = {
 };
 
 const InputShortener = ({ setInputValue }: InputShortenerType) => {
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>();
   const handleClick = () => {
-    setInputValue(value);
+    if(value !== undefined){
+      setInputValue(value);
+    }
     setValue("");
   };
   return (

@@ -2,26 +2,27 @@ import React, { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import axios from "axios";
 
-const LinkResult = ({ InputValue }) => {
+const LinkResult = ({ InputValue }:{InputValue:string | undefined}) => {
   const [shortenLink, setShortenLink] = useState("");
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<any>();
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios(
-        `https://api.shrtco.de/v2/shorten?url=${InputValue}`
+      const res = await axios.post(
+        // `https://api.shrtco.de/v2/shorten?url=${InputValue}`
+        `https://ulvis.net/API/write/get?url=https://www.youtube.com/watch?v=&custom=mycustomname&private=1&type=json`
       );
       setShortenLink(res.data.result.full_short_link);
-    } catch (err) {
+    } catch (err) { 
       setError(err);
     } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-    if (InputValue.length) {
+    if (InputValue) {
       fetchData();
     }
   }, [InputValue]);
