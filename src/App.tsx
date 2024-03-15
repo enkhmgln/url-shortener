@@ -1,16 +1,27 @@
-import React, { useState } from "react";
-import InputShortener from "./components/InputShortener";
-import LinkResult from "./components/LinkResult";
+import React, { useState, useEffect } from 'react';
+import { api } from './axios-instance';
 
-function App() {
-  const [InputValue, setInputValue] = useState<string >();
-    return (
-    <div className="flex flex-col justify-center text-center items-center bg-white max-[768px]:h-[60vh] ">
-      <InputShortener setInputValue={setInputValue} />
+const MyComponent = () => {
+  const [users, setUsers] = useState([]);
 
-      <LinkResult InputValue={InputValue} />
+useEffect( () => {
+  api.get(process.env.REACT_APP_API_URL || '').then((res) => {
+           setUsers(res.data.users);
+           console.log(res.data);
+         }).catch((err:any)=> console.log(err))
+        
+  }, []);
+
+  return (
+    <div>
+      <h1>Users</h1>
+      <ul>
+        {users.map((user, index) => (
+          <li key={index}>{user}</li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
-export default App;
+export default MyComponent;
